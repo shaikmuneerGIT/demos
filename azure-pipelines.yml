@@ -8,13 +8,28 @@ trigger:
 
 # we can use ubuntu because core
 
-pool: 
-  name: default
-  demands: RegistryHack -equals true
+pool:
+  vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: 'Debug'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build -- OurClassLibrary configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    nobuild: true
+    versioningScheme: 'off'
+
+- task: NuGetAuthenticate@0
+  displayName: 'NuGet Authenticate'
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
+  inputs:
+    command: push
+    allowPackageConflicts: true
+    publishVstsFeed: 'a5cf8a53-c79d-4dd8-981d-4df6cf64d001/8276fa8e-1250-4f95-ad7b-c7035ad26533'
