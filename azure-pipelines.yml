@@ -8,9 +8,8 @@ trigger:
 
 # we can use ubuntu because core
 
-pool: 
-  name: default
-  demands: RegistryHack -equals true
+pool:
+  vmImage: 'ubuntu-latest'
 
 variables:
   buildConfiguration: 'Release'
