@@ -25,9 +25,11 @@ steps:
     nobuild: true
     versioningScheme: 'off'
 
-- task: DotNetCoreCLI@2
+- task: NuGetAuthenticate@0
+  displayName: 'NuGet Authenticate'
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
   inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    nuGetFeedType: 'internal'
+    command: push
+    allowPackageConflicts: true
     publishVstsFeed: 'a5cf8a53-c79d-4dd8-981d-4df6cf64d001/8276fa8e-1250-4f95-ad7b-c7035ad26533'
